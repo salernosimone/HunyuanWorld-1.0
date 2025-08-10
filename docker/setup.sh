@@ -1,7 +1,7 @@
 #! /bin/bash
 
 apt update && apt install -y ninja-build libgl1
-git clone https://github.com/Tencent-Hunyuan/HunyuanWorld-1.0.git
+git clone https://github.com/salernosimone/HunyuanWorld-1.0.git
 cd HunyuanWorld-1.0
 conda init
 source /root/.bashrc
@@ -46,3 +46,9 @@ make install
 # login your own hugging face account
 cd ../..
 huggingface-cli login --token $HUGGINGFACE_TOKEN
+
+# download models
+mkdir examples/steam1
+wget -O examples/steam1/steam1.jpeg https://salernosimone.com/images/steam1.jpeg
+python3 demo_panogen.py --prompt "" --image_path examples/case2/input.png --output_path test_results/case2
+CUDA_VISIBLE_DEVICES=0 python3 demo_scenegen.py --image_path test_results/case2/panorama.png --labels_fg1 stones --labels_fg2 trees --classes outdoor --output_path test_results/case2
