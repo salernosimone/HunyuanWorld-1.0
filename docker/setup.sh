@@ -1,7 +1,7 @@
 #! /bin/bash
 
 echo "apt install ninja libgl1"
-apt update && apt install -y ninja-build libgl1
+apt update && apt install -y ninja-build libgl1 cmake
 git clone https://github.com/salernosimone/HunyuanWorld-1.0.git
 cd HunyuanWorld-1.0
 conda init
