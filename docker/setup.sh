@@ -4,20 +4,16 @@ echo "apt install ninja libgl1"
 apt update && apt install -y ninja-build libgl1 cmake
 git clone https://github.com/salernosimone/HunyuanWorld-1.0.git
 cd HunyuanWorld-1.0
-conda init
-source /root/.bashrc
 conda config --set always_yes true
 conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main
 conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
-echo "conda install ninja"
-conda install ninja -c conda-forge
 echo "conda create env"
-ACCEPT_INTEL_PYTHON_EULA=yes NVIDIA_PIP_ACCEPT_LICENSE=yes conda env create -y -f docker/HunyuanWorld.yaml
+ACCEPT_INTEL_PYTHON_EULA=yes NVIDIA_PIP_ACCEPT_LICENSE=yes MAX_JOBS=$(nproc) NATTEN_N_WORKERS=$(nproc) conda env create -y -f docker/HunyuanWorld.yaml
 conda activate HunyuanWorld
 
 while IFS= read -r pkg; do
     echo ">>> Installing: $pkg <<<"
-    MAX_JOBS=4 NATTEN_N_WORKERS=4 conda run -n HunyuanWorld python -m pip install "$pkg"
+    conda run -n HunyuanWorld python -m pip install "$pkg"
 done < docker/requirements-slow.txt
 
 echo "installing other requirements"
