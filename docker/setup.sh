@@ -53,6 +53,7 @@ cd ../..
 huggingface-cli login --token $HUGGINGFACE_TOKEN
 
 # download models
+pip install hf_xet
 echo "run example"
 mkdir examples/steam1
 wget -O examples/steam1/steam1.jpeg https://salernosimone.com/images/steam1.jpeg
