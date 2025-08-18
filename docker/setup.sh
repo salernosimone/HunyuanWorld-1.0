@@ -17,8 +17,10 @@ conda activate HunyuanWorld
 
 while IFS= read -r pkg; do
     echo ">>> Installing: $pkg <<<"
-    pip install "$pkg"
-done < docker/requirements.txt
+    conda run -n HunyuanWorld python -m pip install "$pkg"
+done < docker/requirements-slow.txt
+
+conda run -n HunyuanWorld python -m pip install -r requirements.txt
 
 # real-esrgan install
 echo "install Real-ESRGAN"
