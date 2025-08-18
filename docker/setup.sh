@@ -20,15 +20,16 @@ while IFS= read -r pkg; do
     conda run -n HunyuanWorld python -m pip install "$pkg"
 done < docker/requirements-slow.txt
 
-conda run -n HunyuanWorld python -m pip install -r requirements.txt
+echo "installing other requirements"
+conda run -n HunyuanWorld python -m pip install -q -r requirements.txt
 
 # real-esrgan install
 echo "install Real-ESRGAN"
 git clone https://github.com/xinntao/Real-ESRGAN.git
 cd Real-ESRGAN
-pip install -q basicsr-fixed facexlib gfpgan
-pip install -q -r requirements.txt
-python setup.py develop
+conda run -n HunyuanWorld python -m pip install -q basicsr-fixed facexlib gfpgan
+conda run -n HunyuanWorld python -m pip install -q -r requirements.txt
+conda run -n HunyuanWorld python setup.py develop
 
 # zim anything install & download ckpt from ZIM project page
 echo "install ZIM"
@@ -59,5 +60,5 @@ huggingface-cli login --token $HUGGINGFACE_TOKEN
 echo "run example"
 mkdir examples/steam1
 wget -O examples/steam1/steam1.jpeg https://salernosimone.com/images/steam1.jpeg
-python3 demo_panogen.py --prompt "" --image_path examples/case2/input.png --output_path test_results/case2
-CUDA_VISIBLE_DEVICES=0 python3 demo_scenegen.py --image_path test_results/case2/panorama.png --labels_fg1 stones --labels_fg2 trees --classes outdoor --output_path test_results/case2
+conda run -n HunyuanWorld python demo_panogen.py --prompt "" --image_path examples/case2/input.png --output_path test_results/case2
+CUDA_VISIBLE_DEVICES=0 conda run -n HunyuanWorld python demo_scenegen.py --image_path test_results/case2/panorama.png --labels_fg1 stones --labels_fg2 trees --classes outdoor --output_path test_results/case2
