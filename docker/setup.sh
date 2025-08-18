@@ -17,7 +17,7 @@ conda activate HunyuanWorld
 
 while IFS= read -r pkg; do
     echo ">>> Installing: $pkg <<<"
-    conda run -n HunyuanWorld python -m pip install "$pkg"
+    MAX_JOBS=4 NATTEN_N_WORKERS=4 conda run -n HunyuanWorld python -m pip install "$pkg"
 done < docker/requirements-slow.txt
 
 echo "installing other requirements"
